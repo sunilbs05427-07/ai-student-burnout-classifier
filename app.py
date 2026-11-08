@@ -37,16 +37,38 @@ target_col = load_file("model/target_column.joblib")      # name of the target c
 
 # STEP 4: Sidebar - upload option and model dropdown
 st.sidebar.header("Options")
-uploaded_file = st.sidebar.file_uploader("Upload test data (CSV)", type=["csv"])
+
+# The user can either use the 20% held-out test file stored in the repository or upload a csv
+data_source = st.sidebar.radio(
+    "Choose test data",
+    ["Use held-out test data (20% split)", "Upload my own CSV"]
+)
+
+uploaded_file = None                                  # nothing uploaded yet
+if data_source == "Upload my own CSV":
+    uploaded_file = st.sidebar.file_uploader("Upload test data (CSV)", type=["csv"])
+
+# Download button so that anyone can get the sample test file and upload it back
+with open("test_data.csv", "rb") as sample_file:
+    st.sidebar.download_button(
+        "Download test_data.csv (20% held-out split)",
+        data=sample_file.read(),
+        file_name="test_data.csv",
+        mime="text/csv"
+    )
+
 model_name = st.sidebar.selectbox("Select a model", list(MODEL_FILES.keys()))
 
-# STEP 5: Stop here until a file is uploaded
-if uploaded_file is None:
+# STEP 5: Decide which data to use
+if data_source == "Use held-out test data (20% split)":
+    data = pd.read_csv("test_data.csv")               # file stored in the repository
+elif uploaded_file is not None:
+    data = pd.read_csv(uploaded_file)                 # file uploaded by the user
+else:
     st.info("Please upload the test csv file from the sidebar.")
-    st.stop()
+    st.stop()                                         # stop here until a file is uploaded
 
-# STEP 6: Read the csv and check that the target column is present
-data = pd.read_csv(uploaded_file)
+# STEP 6: Check that the target column is present
 st.subheader("Uploaded data preview")
 st.dataframe(data.head())
 
