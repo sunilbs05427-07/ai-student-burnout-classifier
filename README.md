@@ -37,7 +37,7 @@ one-hot encoded, and both steps are saved inside each model pipeline. The 80-20 
 so every part keeps the same class ratio.
 
 ## c. GitHub Repository Link
-
+https://github.com/sunilbs05427-07/ai-student-burnout-classifier.git
 
 ## d. Models Used
 
@@ -69,10 +69,18 @@ Precision, Recall and F1 are weighted averages over the 3 classes. AUC is one-vs
 It has the highest score on every metric (Accuracy 0.538, AUC 0.693, Precision 0.5528, Recall 0.538, F1 0.5387, MCC 0.2789). It is also the simplest model and trains quickly. Naive Bayes and SVM are close behind, while Decision Tree and KNN are clearly the weakest. Overall scores are modest (MCC about 0.28), so the available features only partly predict burnout risk.
 
 ## Streamlit App
-Live app link: 
+Live app link: https://ai-student-burnout-classifier-sunilbs05427.streamlit.app/
 
-How to use: upload `test_data.csv`, pick a model from the dropdown, and view the metrics,
-confusion matrix and classification report. The saved models are loaded, not retrained.
+### Features
+- Choose the test data: use the held-out test data (20% split) stored in the repository, or upload your own CSV
+- Download button for `test_data.csv`
+- Model selection dropdown (all 5 models)
+- Evaluation metrics: Accuracy, AUC, Precision, Recall, F1, MCC
+- Confusion matrix and classification report
+- Comparison table of all 5 models on the selected test data
+
+### How to use
+Open the app link and keep **Use held-out test data (20% split)** selected to see results straight away, or choose **Upload my own CSV** and upload `test_data.csv`. `test_data.csv` is the 20% of the sampled dataset (2,000 rows) that was set aside before training, so the models have never seen it. The uploaded CSV must contain all 14 feature columns and the target column `Burnout_Risk_Level`. Pick a model from the dropdown to view its metrics, confusion matrix and classification report. The saved models are loaded, not retrained.
 
 ## How to run locally
 ```
